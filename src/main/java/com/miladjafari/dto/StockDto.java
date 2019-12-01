@@ -1,6 +1,9 @@
 package com.miladjafari.dto;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Random;
 
@@ -8,7 +11,7 @@ public class StockDto {
     private Long id;
     private String name;
     private BigDecimal price;
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 
     public StockDto() {
     }
@@ -37,11 +40,11 @@ public class StockDto {
         this.price = price;
     }
 
-    public Date getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
@@ -67,14 +70,14 @@ public class StockDto {
             return this;
         }
 
-        public Builder lastUpdate(Date lastUpdate) {
-            instance.lastUpdate = lastUpdate;
+        public Builder lastUpdate(String dateString) {
+            instance.lastUpdate = LocalDateTime.parse(dateString);
             return this;
         }
 
         public Builder stockCreateRequest(StockCreateRequestDto stockCreateRequestDto) {
             instance.id = new Random().nextLong();
-            instance.lastUpdate = new Date();
+            instance.lastUpdate = LocalDateTime.now();
 
             instance.name = stockCreateRequestDto.getName();
             instance.price = new BigDecimal(stockCreateRequestDto.getPrice());
