@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class StockValidator {
 
     @Inject
-    StockService stockService;
+    StockDao stockService;
 
     @Inject
     Validator validator;

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
-public class StockService {
+public class StockDao {
     private List<StockDto> stocks = new ArrayList<>();
 
     @Inject

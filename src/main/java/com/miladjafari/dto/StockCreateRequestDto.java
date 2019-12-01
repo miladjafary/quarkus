@@ -12,7 +12,7 @@ public class StockCreateRequestDto {
     private String name;
 
     @NotBlank(message = "Price is required")
-    @Pattern(regexp="[0-9]+" , message = "Price must be only digits")
+    @Pattern(regexp="^[0-9]+(\\.[0-9]{1,2})?$" , message = "Price must be only digits")
     private String price;
 
     public String getName() {
