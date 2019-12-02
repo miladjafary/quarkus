@@ -52,4 +52,13 @@ public class StockResource {
         return updateResponse.getJaxRsResponse();
     }
 
+    @DELETE
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteStock(@PathParam("id") String id) {
+        ServiceResponseDto updateResponse = stockController.delete(id);
+        return updateResponse.getJaxRsResponse();
+    }
+
 }

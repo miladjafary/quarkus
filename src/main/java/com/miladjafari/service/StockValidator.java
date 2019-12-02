@@ -6,6 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,6 +31,22 @@ public class StockValidator {
     public List<ValidationErrorDto> validate(StockUpdateRequestDto stockUpdateRequest) {
         List<ValidationErrorDto> errors = validateFormat(stockUpdateRequest);
         validateStockIdIfErrorIsEmpty(stockUpdateRequest.getId(), errors);
+
+        return errors;
+    }
+
+    public List<ValidationErrorDto> validate(String stockId) {
+        List<ValidationErrorDto> errors = new ArrayList<>();
+        if (!Optional.ofNullable(stockId).isPresent()) {
+            errors.add(ValidationErrorDto.builder()
+                    .code(ReasonCode.INVALID_VALUE)
+                    .description("Stock id must be only digit")
+                    .param("stockId")
+                    .build()
+            );
+        }
+
+        validateStockIdIfErrorIsEmpty(stockId, errors);
 
         return errors;
     }

@@ -76,7 +76,7 @@ public class StockDto {
         }
 
         public Builder stockCreateRequest(StockCreateRequestDto stockCreateRequestDto) {
-            instance.id = new Random().nextLong();
+            instance.id = System.currentTimeMillis();
             instance.lastUpdate = LocalDateTime.now();
 
             instance.name = stockCreateRequestDto.getName();

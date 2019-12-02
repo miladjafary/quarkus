@@ -72,4 +72,18 @@ public class StockController {
 
         return responseBuilder.build();
     }
+
+    public ServiceResponseDto delete(String id) {
+        ServiceResponseDto.Builder responseBuilder = ServiceResponseDto.builder();
+
+        List<ValidationErrorDto> validationErrors = validator.validate(id);
+        if (validationErrors.isEmpty()) {
+            stockDao.delete(Long.valueOf(id));
+            responseBuilder.ok();
+        } else {
+            responseBuilder.badRequest().errors(validationErrors);
+        }
+
+        return responseBuilder.build();
+    }
 }

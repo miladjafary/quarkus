@@ -49,4 +49,9 @@ public class StockDao {
     public void update(StockDto stock) {
 
     }
+
+    public void delete (Long id) {
+        Optional<StockDto> stock =findById(id);
+        stock.ifPresent(stockDto -> stocks.remove(stockDto));
+    }
 }
