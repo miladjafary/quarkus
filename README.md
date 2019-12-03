@@ -73,10 +73,7 @@ There are 4 type of RESTful services in Stock App:
     - http `200`: In case of success processing.
     - http `400`: In case of error processing of service. Array of errors object will be returns.
 
-* ``DELETE`` : `/api/stocks/{id}` : Delete an Stock object. Accept a json followed by bellow format:
-```
-{"price":number}
-```
+* ``DELETE`` : `/api/stocks/{id}` : Delete an Stock object. 
 - Responses:
     - http `200`: In case of success processing.
     - http `404`: In case of missing Stock. Array of errors object will be returns.
