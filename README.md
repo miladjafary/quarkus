@@ -20,7 +20,7 @@ which format is followed by below objects
   }
 ]
 ```
-#####Error Object Example:
+####Error Object Example:
 ```
 [
   {
