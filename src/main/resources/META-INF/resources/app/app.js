@@ -1,8 +1,8 @@
 angular
-.module('stockList',[])
-.component('stockList',{
-    templateUrl: 'app/stock-list/stock-list.template.html',
-    controller: function StockListController($http) {
+.module('stockComponent',[])
+.component('stockComponent',{
+    templateUrl: 'app/stock.template.html',
+    controller: function StockController($http) {
         var self = this;
         var handleSuccess = function(message) {
             self.alert.reset();
@@ -131,6 +131,6 @@ angular
 });
 
 angular.module('stockApp', [
-    'stockList'
+    'stockComponent'
 ]);
 
