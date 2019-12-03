@@ -58,7 +58,7 @@
                         <td>{{stock.id}}</td>
                         <td>{{stock.name}}</td>
                         <td>{{stock.price}}</td>
-                        <td>{{stock.lastUpdate}}</td>
+                        <td>{{stock.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>
                             <button class="btn btn-warning" ng-click="$ctrl.updateStock(stock)">Edit</button>
                             <button class="btn btn-danger" ng-click="$ctrl.deleteStock(stock.id)">Delete</button>

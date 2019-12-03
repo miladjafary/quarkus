@@ -122,7 +122,14 @@ angular
         self.refresh = function() {
             self.stocks=[];
             $http.get('/api/stocks').then(function(response){
-                self.stocks = response.data;
+                self.stocks = [];
+                var stocks = response.data;
+                if (stocks != null && stocks.length > 0) {
+                    stocks.forEach(function(stock){
+                        stock.lastUpdate = Date.parse(stock.lastUpdate);
+                        self.stocks.push(stock);
+                    })
+                }
             })
         };
 

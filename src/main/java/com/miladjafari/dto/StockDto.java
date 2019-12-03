@@ -1,11 +1,10 @@
 package com.miladjafari.dto;
 
+import com.miladjafari.dao.Stock;
+
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Random;
+import java.util.Objects;
 
 public class StockDto {
     private Long id;
@@ -48,6 +47,22 @@ public class StockDto {
         this.lastUpdate = lastUpdate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StockDto stockDto = (StockDto) o;
+        return Objects.equals(id, stockDto.id) &&
+                Objects.equals(name, stockDto.name) &&
+                Objects.equals(price, stockDto.price) &&
+                Objects.equals(lastUpdate, stockDto.lastUpdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, lastUpdate);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -75,12 +90,11 @@ public class StockDto {
             return this;
         }
 
-        public Builder stockCreateRequest(StockCreateRequestDto stockCreateRequestDto) {
-            instance.id = System.currentTimeMillis();
-            instance.lastUpdate = LocalDateTime.now();
-
-            instance.name = stockCreateRequestDto.getName();
-            instance.price = new BigDecimal(stockCreateRequestDto.getPrice());
+        public Builder stock(Stock entity){
+            instance.id = entity.id;
+            instance.name = entity.name;
+            instance.price = entity.price;
+            instance.lastUpdate = entity.lastUpdate;
 
             return this;
         }

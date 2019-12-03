@@ -2,6 +2,7 @@ package com.miladjafari.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.ws.rs.PathParam;
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ public class StockUpdateRequestDto {
 
     @NotBlank(message = "Price is required")
     @Pattern(regexp="^[0-9]+(\\.[0-9]{1,2})?$" , message = "Price must be money")
+    @Size(max = 15, message = "Price can have only 15 digits")
     private String price;
 
     public String getId() {

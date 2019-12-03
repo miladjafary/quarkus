@@ -1,5 +1,7 @@
 package com.miladjafari.service;
 
+import com.miladjafari.dao.Stock;
+import com.miladjafari.dao.StockDao;
 import com.miladjafari.dto.*;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -72,8 +74,8 @@ public class StockValidator {
 
     private void validateStockIdIfErrorIsEmpty(String id, List<ValidationErrorDto> errors) {
         if (errors.isEmpty()) {
-            Optional<StockDto> stockDto = stockService.findById(Long.valueOf(id));
-            if (!stockDto.isPresent()) {
+            Optional<Stock> stock = Optional.ofNullable(stockService.findById(Long.valueOf(id)));
+            if (!stock.isPresent()) {
                 errors.add(ValidationErrorDto.builder()
                         .code(ReasonCode.STOCK_NOT_FOUND)
                         .description("Stock not found")
