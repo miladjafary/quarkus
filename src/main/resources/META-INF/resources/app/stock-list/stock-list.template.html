@@ -5,16 +5,42 @@
 </div>
 
 <div class="row">
+    <div class="col-md-12" style="margin-bottom:10px" ng-show="$ctrl.form.isShow">
+        <div class="card" >
+            <div class="card-header"><h5>{{$ctrl.form.title}}</h5></div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group row">
+                        <label for="stockName" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="stockName" ng-model="$ctrl.form.stockName.value" ng-disabled="$ctrl.form.stockName.readonly">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="stockPrice" class="col-sm-2 col-form-label">Price</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="stockPrice" ng-model="$ctrl.form.stockPrice">
+                        </div>
+                    </div>
+                    <button class="btn btn-success mb-2" ng-click="$ctrl.save()">Save</button>
+                    <button class="btn btn-danger mb-2" ng-click="$ctrl.closeForm()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12"></div>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-9"><h5> Stock List</h5></div>
+                    <div class="col-md-8"><h5> Stock List</h5></div>
                     <div class="col-md-2" style="text-align:right">
                         <input ng-model="$ctrl.query" class="form-control" placeholder="Search text">
                     </div>
-                    <div class="col-md-1">
-                        <button class="btn btn-primary" ng-click="$ctrl.refresh()"><i class="refresh" ></i>Refresh</button>
+                    <div class="col-md-2" style="text-align:right">
+                        <button class="btn btn-primary" ng-click="$ctrl.refresh()">Refresh</button>
+                        <button class="btn btn-primary" ng-click="$ctrl.createNewStock()">Add</button>
                     </div>
                 </div>
             </div>
@@ -32,7 +58,10 @@
                         <td>{{stock.name}}</td>
                         <td>{{stock.price}}</td>
                         <td>{{stock.lastUpdate}}</td>
-                        <td><button class="btn btn-danger" ng-click="$ctrl.deleteStock(stock.id)"><i class="icon-plus" ></i>Delete</button></td>
+                        <td>
+                            <button class="btn btn-warning" ng-click="$ctrl.updateStock(stock)">Edit</button>
+                            <button class="btn btn-danger" ng-click="$ctrl.deleteStock(stock.id)">Delete</button>
+                        </td>
                     </tr>
                 </table>
             </div>
