@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class StockValidator {
 
     @Inject
-    StockDao stockService;
+    StockDao stockDao;
 
     @Inject
     Validator validator;
@@ -62,8 +62,8 @@ public class StockValidator {
 
     private void validateStockNameIfErrorsIsEmpty(String stockName, List<ValidationErrorDto> errors) {
         if (errors.isEmpty()) {
-            Optional<StockDto> stockDto = stockService.findByName(stockName);
-            if (stockDto.isPresent()) {
+            Optional<Stock> stock = stockDao.findByName(stockName);
+            if (stock.isPresent()) {
                 errors.add(ValidationErrorDto.builder()
                         .code(ReasonCode.STOCK_IS_EXIST)
                         .description("Stock name is already exist")
@@ -74,7 +74,7 @@ public class StockValidator {
 
     private void validateStockIdIfErrorIsEmpty(String id, List<ValidationErrorDto> errors) {
         if (errors.isEmpty()) {
-            Optional<Stock> stock = Optional.ofNullable(stockService.findById(Long.valueOf(id)));
+            Optional<Stock> stock = Optional.ofNullable(stockDao.findById(Long.valueOf(id)));
             if (!stock.isPresent()) {
                 errors.add(ValidationErrorDto.builder()
                         .code(ReasonCode.STOCK_NOT_FOUND)
