@@ -8,7 +8,9 @@ Stock Application is a simple CRUD application which has been written by
 You can running the Stock App through below command:
 *  mvn quarkus:dev
 
-
+After running the Stock App you can access to it through 
+(http://localhost:8080/)
+ 
 ### Stock App Errors:
 In case of processing the service with errors, Stock App will generate an array of errors object 
 which format is followed by below objects 
