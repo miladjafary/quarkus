@@ -4,7 +4,7 @@ import com.miladjafari.dto.ServiceResponseDto;
 import com.miladjafari.dto.StockCreateRequestDto;
 import com.miladjafari.dto.StockDto;
 import com.miladjafari.dto.StockUpdateRequestDto;
-import com.miladjafari.service.StockController;
+import com.miladjafari.service.StockService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -16,20 +16,20 @@ import java.util.List;
 public class StockResource {
 
     @Inject
-    StockController stockController;
+    StockService stockService;
 
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<StockDto> findAll() {
-        return stockController.findAll();
+        return stockService.findAll();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("id") Long id) {
-        ServiceResponseDto serviceResponseDto = stockController.findById(id);
+        ServiceResponseDto serviceResponseDto = stockService.findById(id);
         return serviceResponseDto.getJaxRsResponse();
     }
 
@@ -37,7 +37,7 @@ public class StockResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createStock(StockCreateRequestDto createRequest) {
-        ServiceResponseDto createStockResponse = stockController.create(createRequest);
+        ServiceResponseDto createStockResponse = stockService.create(createRequest);
         return createStockResponse.getJaxRsResponse();
     }
 
@@ -47,7 +47,7 @@ public class StockResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateStock(@PathParam("id") String id, StockUpdateRequestDto updateRequest) {
         updateRequest.setId(id);
-        ServiceResponseDto updateResponse = stockController.update(updateRequest);
+        ServiceResponseDto updateResponse = stockService.update(updateRequest);
 
         return updateResponse.getJaxRsResponse();
     }
@@ -57,7 +57,7 @@ public class StockResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteStock(@PathParam("id") String id) {
-        ServiceResponseDto updateResponse = stockController.delete(id);
+        ServiceResponseDto updateResponse = stockService.delete(id);
         return updateResponse.getJaxRsResponse();
     }
 

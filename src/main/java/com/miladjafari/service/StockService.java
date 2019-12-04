@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import static com.miladjafari.dto.ReasonCode.STOCK_NOT_FOUND;
 
 @ApplicationScoped
-public class StockController {
+public class StockService {
 
     @Inject
     StockValidator validator;

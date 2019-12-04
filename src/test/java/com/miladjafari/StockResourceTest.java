@@ -1,13 +1,10 @@
 package com.miladjafari;
 
-import com.miladjafari.dto.ReasonCode;
-import com.miladjafari.dto.StockCreateRequestDto;
-import com.miladjafari.dto.StockDto;
-import com.miladjafari.dto.ValidationErrorDto;
+import com.miladjafari.dto.*;
+import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.apache.http.HttpHeaders;
+import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +16,19 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @QuarkusTest
+@QuarkusTestResource(H2DatabaseTestResource.class)
 class StockResourceTest {
-    private static final String NAME_IS_REQUIRED = "Name is required";
-    private static final String PRICE_IS_REQUIRED = "Price is required";
-    private static final String PRICE_MUST_BE_ONLY_DIGITS = "Price must be only digits";
 
     private static final String URL_STOCK_LIST = "/api/stocks";
     private static final String URL_STOCK_CREATE = "/api/stocks";
+    private static final String URL_STOCK_UPDATE = "/api/stocks/{id}";
+    private static final String URL_STOCK_DELETE = "/api/stocks/{id}";
     private static final String URL_STOCK_READ_ONE = "/api/stocks/{id}";
 
     @Test
-    @Ignore
     public void testSuccessGetListOfStocks() {
         List<StockDto> expectedStocks = new ArrayList<>();
         expectedStocks.add(StockDto.builder().id(1).name("Milad").price(new BigDecimal("1000")).lastUpdate("2019-12-01T10:54:00").build());
@@ -47,7 +44,6 @@ class StockResourceTest {
     }
 
     @Test
-    @Ignore
     public void testSuccessGetOneStock() {
         final Integer STOCK_ID = 1;
         StockDto expectedStock = StockDto.builder().id(1).name("Milad").price(new BigDecimal("1000")).lastUpdate("2019-12-01T10:54:00").build();
@@ -61,7 +57,6 @@ class StockResourceTest {
     }
 
     @Test
-    @Ignore
     public void testFailGetOneStockIfStockIdNotFound() {
         final Integer NOT_EXIST_STOCK_ID = 10;
         List<ValidationErrorDto> expectedErrors = new ArrayList<>();
@@ -76,28 +71,71 @@ class StockResourceTest {
     }
 
     @Test
-    @Ignore
-    public void testFailCreateStockIfRequiredFieldsWereNotSent() {
+    public void testFailCreateStockIfRequiredFieldsAreNotSent() {
+        Integer expectedErrorsCounts = 2;
+
         StockCreateRequestDto stockCreateRequestDto = new StockCreateRequestDto();
         stockCreateRequestDto.setName(null);
         stockCreateRequestDto.setPrice(null);
 
         String stockCreateRequestJson = JsonbBuilder.create().toJson(stockCreateRequestDto);
 
-        List<ValidationErrorDto> expectedErrors = new ArrayList<>();
-        expectedErrors.add(ValidationErrorDto.builder().code(ReasonCode.INVALID_VALUE).description(PRICE_IS_REQUIRED).param("price").build());
-        expectedErrors.add(ValidationErrorDto.builder().code(ReasonCode.INVALID_VALUE).description(NAME_IS_REQUIRED).param("name").build());
-        expectedErrors.add(ValidationErrorDto.builder().code(ReasonCode.INVALID_VALUE).description(PRICE_MUST_BE_ONLY_DIGITS).param("price").build());
+        Response response = given()
+                .body(stockCreateRequestJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .post(URL_STOCK_CREATE)
+                .then().assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .extract()
+                .response();
 
-        String expectedErrorsJson = JsonbBuilder.create().toJson(expectedErrors);
+        assertThat(response.jsonPath().getList("$").size(), is(expectedErrorsCounts));
+    }
+
+    @Test
+    public void testSuccessCreateStockIfAllFieldAreValid() {
+        StockCreateRequestDto stockCreateRequestDto = new StockCreateRequestDto();
+        stockCreateRequestDto.setName("Not Exist Name");
+        stockCreateRequestDto.setPrice("1100");
+
+        String stockCreateRequestJson = JsonbBuilder.create().toJson(stockCreateRequestDto);
+
         given()
                 .body(stockCreateRequestJson)
                 .contentType(MediaType.APPLICATION_JSON)
-//                .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .post(URL_STOCK_CREATE)
-                .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(is(expectedErrorsJson));
+                .then().assertThat()
+                .statusCode(HttpStatus.SC_OK)
+        ;
+    }
+
+    @Test
+    public void testSuccessUpdateStockIfAllFieldAreValid() {
+        final Long STOCK_ID = 1L;
+        StockUpdateRequestDto stockCreateRequestDto = new StockUpdateRequestDto();
+        stockCreateRequestDto.setPrice("1100");
+
+        String stockCreateRequestJson = JsonbBuilder.create().toJson(stockCreateRequestDto);
+
+        given()
+                .body(stockCreateRequestJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .put(URL_STOCK_UPDATE, STOCK_ID)
+                .then().assertThat()
+                .statusCode(HttpStatus.SC_OK)
+        ;
+    }
+
+    @Test
+    public void testSuccessDeleteStock() {
+        final Long STOCK_ID = 3L;
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .delete(URL_STOCK_DELETE, STOCK_ID)
+                .then().assertThat()
+                .statusCode(HttpStatus.SC_OK)
+        ;
     }
 
 }
