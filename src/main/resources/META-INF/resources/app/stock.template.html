@@ -35,10 +35,9 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-8"><h5> Stock List</h5></div>
-                    <div class="col-md-4 mr-auto" style="text-align:right">
+                    <div class="col-md-10"><h5> Stock List</h5></div>
+                    <div class="col-md-2 mr-auto">
                         <form class="form-inline">
-                            <input ng-model="$ctrl.query" class="form-control mr-sm-2" placeholder="Search text">
                             <button class="btn btn-primary mr-sm-2" ng-click="$ctrl.refresh()">Refresh</button>
                             <button class="btn btn-primary" ng-click="$ctrl.createNewStock()">Add</button>
                         </form>
@@ -54,7 +53,7 @@
                         <td>LastUpdate</td>
                         <td>Action</td>
                     </tr>
-                    <tr ng-repeat="stock in $ctrl.stocks | filter: $ctrl.query">
+                    <tr ng-repeat="stock in $ctrl.stocks">
                         <td>{{stock.id}}</td>
                         <td>{{stock.name}}</td>
                         <td>{{stock.price}}</td>
